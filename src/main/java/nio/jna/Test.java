@@ -1,4 +1,4 @@
-package nio.jni;
+package nio.jna;
 
 public class Test {
 
