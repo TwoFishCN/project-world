@@ -1,4 +1,4 @@
-package nio.jna;
+package jna;
 
 public class Test {
 
