@@ -1,5 +1,5 @@
 # nettyWork
 
-netty Work; work By Netty, By Nio and so on.
+netty Work; work By netty, By Nio and so on.
 
 
