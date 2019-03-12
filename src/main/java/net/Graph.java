@@ -11,7 +11,10 @@ public class Graph {
 
     public static Graph build(String data) {
         Graph graph = new Graph();
+        return graph.append(data);
+    }
 
+    public Graph append(String data) {
         /*删除所有空格, 再按逗号分隔*/
         String[] links = data.replaceAll(" +", "").split(",");
 
@@ -20,15 +23,46 @@ public class Graph {
             String to = link.substring(1, 2);
             Integer length = Integer.valueOf(link.substring(2, 3));
 
-            graph.drawLink(from, to, length);
+            drawLink(from, to, length);
         }
 
-        return graph;
+        return this;
     }
 
     private void drawLink(String from, String to, Integer length) {
         List<Link> links = graph.computeIfAbsent(from, k -> new ArrayList<>());
         links.add(new Link(from, to, length));
+    }
+
+
+    public String getRouteLength(String route) {
+        try {
+            Integer length = countRouteLength(route);
+            return length.toString();
+        } catch (NoRouteException e) {
+            return "NO SUCH ROUTE";
+        }
+    }
+
+    private Integer countRouteLength(String route) throws NoRouteException {
+        String[] nodes = route.split("-");
+
+        if (nodes.length < 2) {
+            throw new NoRouteException("too few node.");
+        }
+
+        Integer routeLength = 0;
+        String from;
+        String to;
+
+        for (int index = 0; index < nodes.length - 1; index++) {
+            from = nodes[index];
+            to = nodes[index + 1];
+
+            routeLength = routeLength + getLinkLength(from, to);
+        }
+
+        return routeLength;
     }
 
     private Integer getLinkLength(String from, String to) throws NoRouteException {
@@ -43,42 +77,4 @@ public class Graph {
         throw new NoRouteException("No Route from " + from + " to " + to);
     }
 
-    private Integer countRouteLength(String route) throws NoRouteException {
-        String[] nodes = route.split("-");
-
-        if (nodes.length < 2) {
-            throw new NoRouteException("too few node.");
-        }
-
-        Integer routeLength = 0;
-        String from = null;
-        String to = null;
-
-        for (String node : nodes) {
-            if (from == null) {
-                from = node;
-            } else if (to == null) {
-                to = node;
-            } else {
-                from = to;
-                to = node;
-            }
-
-            if (from != null && to != null) {
-                routeLength = routeLength + getLinkLength(from, to);
-            }
-        }
-
-        return routeLength;
-    }
-
-    public String getRouteLength(String route) {
-        try {
-            Integer length = countRouteLength(route);
-            return length.toString();
-        } catch (NoRouteException e) {
-            return "NO SUCH ROUTE";
-        }
-    }
-    
 }
