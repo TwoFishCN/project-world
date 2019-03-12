@@ -52,14 +52,8 @@ public class Graph {
         }
 
         Integer routeLength = 0;
-        String from;
-        String to;
-
         for (int index = 0; index < nodes.length - 1; index++) {
-            from = nodes[index];
-            to = nodes[index + 1];
-
-            routeLength = routeLength + getLinkLength(from, to);
+            routeLength += getLinkLength(nodes[index], nodes[index + 1]);
         }
 
         return routeLength;
