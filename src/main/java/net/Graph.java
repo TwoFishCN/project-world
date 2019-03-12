@@ -9,6 +9,8 @@ public class Graph {
 
     private Map<String, List<Link>> graph = new HashMap<>();
 
+    private Graph(){}
+
     public static Graph build(String data) {
         Graph graph = new Graph();
         return graph.append(data);
