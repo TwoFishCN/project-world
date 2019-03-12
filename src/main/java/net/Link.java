@@ -17,4 +17,16 @@ public class Link {
 
         this.length = length;
     }
+
+    public boolean isFrom(String name) {
+        return from.equals(name);
+    }
+
+    public boolean isTo(String name) {
+        return to.equals(name);
+    }
+
+    public boolean isFromTo(String fromName, String toName) {
+        return isFrom(fromName) && isTo(toName);
+    }
 }
