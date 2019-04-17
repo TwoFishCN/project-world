@@ -20,7 +20,7 @@ public class XorCrypt {
         return new String(xorResult);
     }
 
-    private byte[] xor(byte[] source, byte[] password) {
+    public byte[] xor(byte[] source, byte[] password) {
 
         int sourceLength = source.length;
         int passwordLength = password.length;
