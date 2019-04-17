@@ -2,7 +2,37 @@ package coded;
 
 import java.util.*;
 
-public class XorCrack {
+/**
+ * 针对纯英文文本的xor加密破解
+ * 基于空格字符在xor的特殊表现, 可以通过大量密码本来猜解密文
+ *
+ * doc: 利用重复使用key的流加密密文，来破解目标密文
+ *
+ * 1. 理解加密解密算法
+ * 题目是要求我们利用多条密文( Ci ,i∈[1,10])来破译目标密文(p)，而已有的密文是利用stream cypher(EkEk)来进行加密，加密用的密钥(k)是重复使用的。
+ * 同时，stream cypher是理论课上讲的XOR（异或）运算的加密，即利用一个足够长的key与我们的明文p进行一一异或，得到最后的c。即关系如下：
+ * c=p⨁k
+ * c=p⨁k
+ * 2. 分析加密、解密过程的突破口
+ * 突破口1：利用XOR（异或）运算的性质
+ * 我们已知异或运算有以下性质：
+ * A⨁B=C⇒A⨁C=B或B⨁C=A
+ * A⨁B=C⇒A⨁C=B或B⨁C=A
+ *
+ * 套入我们上面的加密/解密算法中：
+ * C⨁P=K和K⨁C=P
+ * C⨁P=K和K⨁C=P
+ *
+ * 如果我们获得了密文C，通过一定方式解密出来明文P，那么即可简单得到我们的密钥K，接下来只要密钥不变，我们就可以无障碍地破解密文C同时还可以得到
+ * C1⨁C2=(P1⨁K)⨁(P2⨁K)=P1⨁P2
+ * C1⨁C2=(P1⨁K)⨁(P2⨁K)=P1⨁P2
+ *
+ * 这一条特性，使得我们对密文的处理可以跳过了密钥K的处理，使得结果变成明文的异或结果，一旦我们利用明文的相关特点，即可破解明文.
+ *
+ * 构建明文之间的异或关系，查找此关系即可得知目标位可能的数据内容，通过简单分析即可找出密文表达的内容
+ *
+ */
+public class XorCrackBySpace {
 
     public static void main(String[] args) {
         XorCrypt crypt = new XorCrypt();
@@ -30,8 +60,8 @@ public class XorCrack {
         for (byte[] bytes : cipherText) {
             maxPassLen = bytes.length > maxPassLen ? bytes.length : maxPassLen;
         }
-        byte[] passwordByte = new byte[maxPassLen];
 
+        byte[] passwordByte = new byte[maxPassLen];
         for (byte[] cipherByte : cipherText) {
             for (int cipherByteIndex = 0; cipherByteIndex < cipherByte.length; cipherByteIndex++) {
                 if (isSpace(cipherByteIndex, cipherByte, cipherText)) {
@@ -40,18 +70,25 @@ public class XorCrack {
             }
         }
 
-        cipherText = xor(password, cipherText);
+        cipherText = xor(passwordByte, cipherText);
 
         for (byte[] bytes : cipherText) {
-            System.out.println(new String(bytes));
+            for (byte aByte : bytes) {
+                if (Character.isLetter(aByte) || Character.isSpaceChar(aByte)) {
+                    System.out.print((char) aByte);
+                } else {
+                    System.out.print("*");
+                }
+            }
+            System.out.println();
+
         }
 
         System.out.println(new String(passwordByte));
 
     }
 
-    public static List<byte[]> xor(String password, List<byte[]> cipherText) {
-        byte[] passwordByte = password.getBytes();
+    public static List<byte[]> xor(byte[] passwordByte, List<byte[]> cipherText) {
         XorCrypt crypt = new XorCrypt();
         List<byte[]> cipherBytes = new ArrayList<>();
 
@@ -82,7 +119,8 @@ public class XorCrack {
 
     public static boolean isSpace(int cipherByteIndex, byte[] cipherByte, byte[] otherCipherByte) {
         int xor = cipherByte[cipherByteIndex] ^ 0x20 ^ otherCipherByte[cipherByteIndex];
-        return Character.isLetter(xor) || Character.isSpaceChar(xor);
+//        return String.valueOf((char) xor).matches("[\\S|\\s]+");
+        return Character.isLetterOrDigit(xor) || Character.isSpaceChar(xor);
     }
 
 }
