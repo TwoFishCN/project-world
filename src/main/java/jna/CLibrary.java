@@ -8,5 +8,5 @@ public interface CLibrary extends Library {
 
     void printf(String format, Object... args);
 
-    CLibrary INSTANCE = Native.load((Platform.isWindows() ? "msvcrt" : "c"), CLibrary.class);
+    CLibrary INSTANCE = Native.loadLibrary((Platform.isWindows() ? "msvcrt" : "c"), CLibrary.class);
 }
