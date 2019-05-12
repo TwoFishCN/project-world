@@ -1,6 +1,6 @@
 package com.project.world.kotlin
 
-class Hello {
+class Hello(val al: String, var ar: String) {
 
     fun showA(a: String) {
         println(a)
@@ -22,7 +22,7 @@ class Hello {
 
 fun main() {
 
-    val hello = Hello()
+    val hello = Hello("al", "ar")
 
     println("Hell world.")
     hello.showA("niceA")
