@@ -1,6 +1,6 @@
 # project-world
-
-project-world Java world, example code.
+ 
+Example code.
 
 # start before
 
