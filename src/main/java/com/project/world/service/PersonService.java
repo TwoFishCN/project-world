@@ -40,7 +40,7 @@ public class PersonService {
 
         personRepository.count();
 
-        Page<Person> personPage = personRepository.findAll(new PageRequest(1, 1, Sort.Direction.ASC, "id"));
+        Page<Person> personPage = personRepository.findAll(PageRequest.of(1, 1, Sort.Direction.ASC, "id"));
 
         Long currentIdMax = personPage.getTotalElements();
 
