@@ -1,10 +1,13 @@
 package com.project.world.algorithm.tree;
 
 public class Node {
-    Integer value;
+    User user;
 
     Node left;
     Node right;
+
+    public Node(User user) {
+    }
 
     public boolean hasLeft() {
         return left != null;
