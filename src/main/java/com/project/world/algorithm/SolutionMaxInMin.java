@@ -6,7 +6,6 @@ import java.util.Queue;
 public class SolutionMaxInMin {
 
     public static int OCEAN = 0;
-    private static int LAND = 1;
 
     public int maxDistance(int[][] grid) {
         int[] dx = {0, 0, 1, -1};
