@@ -19,7 +19,7 @@ public class WatchServiceDemo {
         while (true) {
             WatchKey watchKey = watchService.take();
 
-            for (WatchEvent event : watchKey.pollEvents()) {
+            for (WatchEvent<?> event : watchKey.pollEvents()) {
                 Path context = (Path) event.context();
 
                 System.out.println(event.kind());
@@ -34,13 +34,9 @@ public class WatchServiceDemo {
         Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                registerDirectory(dir, watchService);
+                dir.register(watchService, ENTRY_CREATE);
                 return FileVisitResult.CONTINUE;
             }
         });
-    }
-
-    private static void registerDirectory(Path dir, WatchService watchService) throws IOException {
-        dir.register(watchService, ENTRY_CREATE);
     }
 }
