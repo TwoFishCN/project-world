@@ -11,3 +11,6 @@ spring:
       enable-auto-commit: true
       group-id: foo
       auto-offset-reset: earliest
+config:
+  self:
+    mapping: {"abc": "hello"}
