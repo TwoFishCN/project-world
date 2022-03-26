@@ -1,5 +1,7 @@
 package com.project.world.algorithm;
 
+import java.util.ArrayList;
+
 public class ListNode {
     int val;
     ListNode next;
@@ -21,5 +23,19 @@ public class ListNode {
             parentNode = currentNode;
         }
         return head;
+    }
+
+    @Override
+    public String toString() {
+        ArrayList<Integer> objects = new ArrayList<>();
+        objects.add(this.val);
+
+        ListNode next = this.next;
+        while (next != null) {
+            objects.add(next.val);
+            next = next.next;
+        }
+
+        return objects.toString();
     }
 }
