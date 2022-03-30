@@ -14,38 +14,25 @@ public class FindStartEndInSortArray {
 
 
     public int[] searchRange(int[] nums, int target) {
-        int index = findIndex(nums, target);
-        if (index == -1) {
-            return new int[]{-1, -1};
-        } else {
-            int[] result = new int[]{index, index};
-            while (result[0] > 0 && nums[result[0] - 1] == target) {
-                result[0] = result[0] - 1;
-            }
-
-            final int maxIndex = nums.length - 1;
-            while (result[1] < maxIndex && nums[result[1] + 1] == target) {
-                result[1] = result[1] + 1;
-            }
-            return result;
+        int leftIdx = binarySearch(nums, target, true);
+        int rightIdx = binarySearch(nums, target, false) - 1;
+        if (leftIdx <= rightIdx && rightIdx < nums.length && nums[leftIdx] == target && nums[rightIdx] == target) {
+            return new int[]{leftIdx, rightIdx};
         }
+        return new int[]{-1, -1};
     }
 
-    int findIndex(int[] nums, int target) {
-        int start = 0;
-        int end = nums.length - 1;
-        while (start < end) {
-            int index = (start + end) / 2;
-            final int value = nums[index];
-            if (value == target) {
-                return index;
-            } else if (value > target) {
-                end = index - 1;
+    public int binarySearch(int[] nums, int target, boolean lower) {
+        int left = 0, right = nums.length - 1, ans = nums.length;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > target || (lower && nums[mid] >= target)) {
+                right = mid - 1;
+                ans = mid;
             } else {
-                start = index + 1;
+                left = mid + 1;
             }
         }
-
-        return -1;
+        return ans;
     }
 }
