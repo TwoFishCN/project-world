@@ -10,6 +10,11 @@ public class ListNode {
         val = x;
     }
 
+    ListNode(int x, ListNode node) {
+        this.val = x;
+        this.next = node;
+    }
+
     public static ListNode toLink(int[] array) {
         if (array.length < 1) {
             return null;
