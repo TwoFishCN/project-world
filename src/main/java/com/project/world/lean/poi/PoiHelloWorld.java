@@ -1,6 +1,6 @@
 package com.project.world.lean.poi;
 
-import com.google.common.io.Files;
+import cn.hutool.core.io.FileUtil;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -14,7 +14,7 @@ public class PoiHelloWorld {
     public static void main(String[] args) throws IOException {
 
 
-        Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(Files.toByteArray(sourceFile())));
+        Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(FileUtil.readBytes(sourceFile())));
 
         Sheet firstSheet = workbook.getSheetAt(0);
         firstSheet.shiftRows(16, firstSheet.getLastRowNum(), 10, true, true);

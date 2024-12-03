@@ -14,6 +14,6 @@ public class XorCryptTest {
         String encoded = encoder.encrypt(source, password);
         String decoded = encoder.decrypt(encoded, password);
 
-        Assert.isTrue(decoded.equals(source));
+        Assert.isTrue(decoded.equals(source), "断言失败");
     }
 }
