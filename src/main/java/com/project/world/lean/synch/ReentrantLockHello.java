@@ -4,9 +4,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentrantLockHello {
-
     private final ReentrantLock lock = new ReentrantLock(true);
-
     private final CountDownLatch latch = new CountDownLatch(5);
 
     public void hello() {
@@ -26,7 +24,7 @@ public class ReentrantLockHello {
             Thread.sleep(5000);
             return 0;
         };
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ThreadPoolExecutor executorService = new ThreadPoolExecutor(10, 20, 10, TimeUnit.MINUTES, new LinkedBlockingDeque(300));
         try (executorService) {
             Future<Integer> f = executorService.submit(callable);
             Integer i = f.get();
