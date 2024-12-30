@@ -1,6 +1,6 @@
 package com.project.world.lean.synch;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentrantLockHello {
@@ -22,13 +22,26 @@ public class ReentrantLockHello {
     }
 
     private void count() {
-        latch.countDown();
+        Callable<Integer> callable = () -> {
+            Thread.sleep(5000);
+            return 0;
+        };
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        try (executorService) {
+            Future<Integer> f = executorService.submit(callable);
+            Integer i = f.get();
+            System.out.println(i);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
         ReentrantLockHello reentrantLockHello = new ReentrantLockHello();
-        for (int i = 0; i < 2; i++) {
-            new Thread(reentrantLockHello::hello).start();
-        }
+//        for (int i = 0; i < 2; i++) {
+//            new Thread(reentrantLockHello::hello).start();
+//        }
+
+        reentrantLockHello.count();
     }
 }
