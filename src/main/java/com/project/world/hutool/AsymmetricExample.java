@@ -3,6 +3,7 @@ package com.project.world.hutool;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.comparator.CompareUtil;
+import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
@@ -32,13 +33,13 @@ public class AsymmetricExample {
         // 3. 要加密的数据
         String content = "加密加密内容加密内容加密内容加密内容加密内容加密内容加密内容加密内容内容";
 
-        // 4. 用私钥加密
+        // 4. 用公钥加密
         SM2 sm2 = SmUtil.sm2(null, publicKey);
         byte[] encryptByPrivate = sm2.encrypt(content.getBytes(), KeyType.PublicKey);
         String encryptStr = Base64.encode(encryptByPrivate);
         System.out.println("公钥加密后：" + encryptStr);
 
-        // 5. 用公钥解密
+        // 5. 用私钥解密
         SM2 sm22 = SmUtil.sm2(privateKey, null);
         byte[] decryptByPublic = sm22.decrypt(Base64.decode(encryptStr), KeyType.PrivateKey);
         String decryptStr = new String(decryptByPublic);
