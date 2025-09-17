@@ -2,14 +2,12 @@ package com.project.world.hutool;
 
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.comparator.CompareUtil;
-import cn.hutool.core.util.HexUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.SM2;
-import cn.hutool.extra.compress.CompressUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 
 /**
@@ -24,25 +22,28 @@ public class AsymmetricExample {
         KeyPair keyPair = SecureUtil.generateKeyPair("SM2");
 
         // 2. 创建非对称加密对象（传入私钥和公钥）
-        String privateKey = Base64.encode(keyPair.getPrivate().getEncoded());
-        String publicKey = Base64.encode(keyPair.getPublic().getEncoded());
+//        String privateKey = Base64.encode(keyPair.getPrivate().getEncoded());
+//        String publicKey = Base64.encode(keyPair.getPublic().getEncoded());
+
+        String privateKey = "X3tgd4r6+IIuipAkhqG1I2x3shqyKYTTKuZkI0ro4ZU=";
+        String publicKey = "BDlj7OO/7n7KjIJn1My+RpIp2ZXUxBLB/itNoCTY+Vl4cR7S7/9vnGxtzp2AWiw/ZJb5my90JjWNhE76V1jRcbg=";
 
         System.out.println("私钥秘钥：" + privateKey);
         System.out.println("公钥秘钥：" + publicKey);
 
         // 3. 要加密的数据
-        String content = "加密加密内容加密内容加密内容加密内容加密内容加密内容加密内容加密内容内容";
+        String content = "System.out.println";
 
         // 4. 用公钥加密
         SM2 sm2 = SmUtil.sm2(null, publicKey);
-        byte[] encryptByPrivate = sm2.encrypt(content.getBytes(), KeyType.PublicKey);
+        byte[] encryptByPrivate = sm2.encrypt(content.getBytes(StandardCharsets.UTF_8), KeyType.PublicKey);
         String encryptStr = Base64.encode(encryptByPrivate);
         System.out.println("公钥加密后：" + encryptStr);
 
         // 5. 用私钥解密
         SM2 sm22 = SmUtil.sm2(privateKey, null);
         byte[] decryptByPublic = sm22.decrypt(Base64.decode(encryptStr), KeyType.PrivateKey);
-        String decryptStr = new String(decryptByPublic);
+        String decryptStr = new String(decryptByPublic, StandardCharsets.UTF_8);
         System.out.println("私钥解密后：" + decryptStr);
     }
 }
